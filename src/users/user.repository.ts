@@ -6,13 +6,14 @@ import {
   BadRequestException,
   InternalServerErrorException,
 } from "@nestjs/common";
-
-const successMesage = { success: true };
-type TsuccessMesage = { success: boolean };
+import {
+  TsuccessMesage,
+  successMesage,
+} from "src/util/messages/success.message";
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
-  async createUser(createUserDto: CreateUserDto): Promise<TsuccessMesage> {
+  async signUp(createUserDto: CreateUserDto): Promise<TsuccessMesage> {
     const { username, email, password } = createUserDto;
 
     const user = new User();

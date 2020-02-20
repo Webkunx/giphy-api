@@ -10,6 +10,6 @@ export class UsersService {
   ) {}
 
   async signUp(createUserDto: CreateUserDto) {
-    return this.userRepository.createUser(createUserDto);
+    return this.userRepository.signUp(createUserDto);
   }
 }

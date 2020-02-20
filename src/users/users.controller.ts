@@ -1,6 +1,8 @@
 import { Controller, Post, Get, Inject, Body } from "@nestjs/common";
 import { UsersService } from "./users.service";
 import { CreateUserDto } from "./dto/create-user.dto";
+import { SignIn } from "src/util/decorators/signin.decorator";
+import { ISignIn } from "./interfaces/signin.interface";
 
 @Controller("users")
 export class UsersController {
@@ -12,7 +14,7 @@ export class UsersController {
   }
 
   @Post("signin")
-  async signin(): Promise<string> {
+  async signin(@SignIn() user: ISignIn): Promise<string> {
     return "signin route";
   }
 }
