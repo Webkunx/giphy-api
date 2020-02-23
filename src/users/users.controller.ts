@@ -1,20 +1,31 @@
-import { Controller, Post, Get, Inject, Body } from "@nestjs/common";
+import { Controller, Post, Get, Inject, Body, UseGuards } from "@nestjs/common";
 import { UsersService } from "./users.service";
 import { CreateUserDto } from "./dto/create-user.dto";
-import { SignIn } from "src/util/decorators/signin.decorator";
-import { ISignIn } from "./interfaces/signin.interface";
+import { SignInUserDto } from "./dto/signin-user.dto";
+import {
+  successMesage,
+  TsuccessMesage,
+} from "src/util/messages/success.message";
+import { AuthGuard } from "@nestjs/passport";
+import { IAccessToken } from "./interfaces/access-token.interface";
 
 @Controller("users")
 export class UsersController {
   constructor(@Inject(UsersService) private userService: UsersService) {}
-  @Post("signup")
-  async signUp(@Body() createUserDto: CreateUserDto) {
-    // return "signup route";
-    return this.userService.signUp(createUserDto);
-  }
 
   @Post("signin")
-  async signin(@SignIn() user: ISignIn): Promise<string> {
-    return "signin route";
+  async signIn(@Body() signInUserDto: SignInUserDto): Promise<IAccessToken> {
+    return this.userService.signInUser(signInUserDto);
+  }
+
+  @Post("signup")
+  async signUp(@Body() createUserDto: CreateUserDto): Promise<TsuccessMesage> {
+    return this.userService.signUpUser(createUserDto);
+  }
+
+  @UseGuards(AuthGuard())
+  @Get("checkjwt")
+  async checkJwt(): Promise<TsuccessMesage> {
+    return successMesage;
   }
 }
