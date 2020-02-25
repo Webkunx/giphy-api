@@ -1,11 +1,4 @@
-import {
-  Controller,
-  Get,
-  Inject,
-  UsePipes,
-  ValidationPipe,
-  Query,
-} from "@nestjs/common";
+import { Controller, Get, Inject, Query } from "@nestjs/common";
 import { GifsService } from "./gifs.service";
 import { FindGifDto } from "./dto/find-gif.dto";
 
