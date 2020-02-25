@@ -6,7 +6,6 @@ import {
   BadRequestException,
   InternalServerErrorException,
   ConflictException,
-  Injectable,
 } from "@nestjs/common";
 import {
   TsuccessMesage,
@@ -42,14 +41,21 @@ export class UserRepository extends Repository<User> {
     signInUserDto: SignInUserDto,
   ): Promise<JwtPayload | null> => {
     const { login, password } = signInUserDto;
-    const user: User = await this.createQueryBuilder("user")
+    const users: User[] = await this.createQueryBuilder("user")
       .where("user.email = :login OR user.username = :login", {
         login,
       })
-      .getOne();
-    if (!user) throw new BadRequestException();
-    const { username, email } = user;
-    if (await user.comparePasswords(password)) return { username, email };
+      .getMany();
+    if (users == []) throw new BadRequestException();
+    const user = await Promise.all(
+      users.map(async user => {
+        return (await user.comparePasswords(password)) === true;
+      }),
+    );
+    if (user.indexOf(true) !== -1) {
+      const { username, email } = users[user.indexOf(true)];
+      return { username, email };
+    }
 
     return null;
   };

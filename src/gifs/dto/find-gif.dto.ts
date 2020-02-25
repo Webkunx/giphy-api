@@ -1,9 +1,14 @@
-import { IsNotEmpty, IsOptional } from "class-validator";
+import {
+  IsNotEmpty,
+  IsOptional,
+  IsNumberString,
+  ValidateIf,
+} from "class-validator";
 
 export class FindGifDto {
   @IsNotEmpty()
   query: string;
 
-  @IsOptional()
-  limit: number = 1;
+  @ValidateIf(e => parseInt(e) !== NaN || e === undefined)
+  limit: number;
 }
