@@ -29,10 +29,14 @@ export class GifsService {
 
     if (found === undefined) return this.gifRepository.createGif(url, user);
 
-    if (found.user.indexOf(user) === -1) return found;
+    if (found.user.indexOf(user) === -1) {
+      delete found.user;
+      return found;
+    }
 
     found.user.push(user);
     await found.save();
+    delete found.user;
     return found;
   }
 
@@ -42,5 +46,12 @@ export class GifsService {
     });
   }
 
-  async getTopGifs() {}
+  async getTopGifs() {
+    // return this.gifRepository
+    //   .createQueryBuilder("gif")
+    //   .leftJoinAndSelect("gif.user", "user")
+    //   .groupBy("gif.id, user.id")
+    //   .orderBy("COUNT(user)", "DESC")
+    //   .getMany();
+  }
 }

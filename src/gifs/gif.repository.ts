@@ -13,6 +13,7 @@ export class GifRepository extends Repository<Gif> {
     } catch (e) {
       throw new InternalServerErrorException("troubles with saving ");
     }
+    delete gif.user;
     return gif;
   }
 }

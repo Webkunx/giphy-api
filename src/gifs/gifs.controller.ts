@@ -39,5 +39,7 @@ export class GifsController {
   }
 
   @Get("top")
-  async getTopGifs() {}
+  async getTopGifs() {
+    return this.gifsService.getTopGifs();
+  }
 }
