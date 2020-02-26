@@ -34,7 +34,10 @@ export class GifsController {
 
   @UseGuards(AuthGuard())
   @Get("user/")
-  async findUserGifs(@GetUserFromRequest() user: User) {
+  async findUserGifs(@GetUserFromRequest() user: User): Promise<Gif[]> {
     return this.gifsService.findUserGifs(user);
   }
+
+  @Get("top")
+  async getTopGifs() {}
 }

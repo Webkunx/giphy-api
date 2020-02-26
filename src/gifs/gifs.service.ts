@@ -36,9 +36,11 @@ export class GifsService {
     return found;
   }
 
-  async findUserGifs(user: User) {
+  async findUserGifs(user: User): Promise<Gif[]> {
     return this.gifRepository.find({
       where: { userId: user.id },
     });
   }
+
+  async getTopGifs() {}
 }
