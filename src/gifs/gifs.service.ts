@@ -6,6 +6,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { GifRepository } from "./gif.repository";
 import { Gif } from "./gif.entity";
 import { User } from "src/users/user.entity";
+import { url } from "inspector";
 @Injectable()
 export class GifsService {
   constructor(
@@ -33,5 +34,11 @@ export class GifsService {
     found.user.push(user);
     await found.save();
     return found;
+  }
+
+  async findUserGifs(user: User) {
+    return this.gifRepository.find({
+      where: { userId: user.id },
+    });
   }
 }

@@ -31,4 +31,10 @@ export class GifsController {
   ): Promise<Gif> {
     return this.gifsService.saveGif(url, user);
   }
+
+  @UseGuards(AuthGuard())
+  @Get("user/")
+  async findUserGifs(@GetUserFromRequest() user: User) {
+    return this.gifsService.findUserGifs(user);
+  }
 }

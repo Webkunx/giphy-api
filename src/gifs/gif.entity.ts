@@ -18,7 +18,7 @@ export class Gif extends BaseEntity {
   @ManyToMany(
     type => User,
     user => user.gif,
-    { eager: true },
+    { eager: false },
   )
   @JoinTable()
   user: User[];
