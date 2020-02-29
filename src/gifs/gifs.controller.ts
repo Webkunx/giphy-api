@@ -6,6 +6,8 @@ import {
   Post,
   Body,
   UseGuards,
+  Delete,
+  Param,
 } from "@nestjs/common";
 import { GifsService } from "./gifs.service";
 import { FindGifDto } from "./dto/find-gif.dto";
@@ -42,5 +44,13 @@ export class GifsController {
   @Get("top")
   async findTopGifs(@Query() findTopGifsDto: FindTopGifsDto): Promise<Gif[]> {
     return this.gifsService.findTopGifs(findTopGifsDto);
+  }
+
+  @Delete(":id")
+  async removeGif(
+    @Param("id") id: string,
+    @GetUserFromRequest() user: User,
+  ): Promise<string> {
+    return this.gifsService.removeGif(id, user);
   }
 }

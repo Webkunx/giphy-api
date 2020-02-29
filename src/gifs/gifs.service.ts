@@ -56,4 +56,16 @@ export class GifsService {
       skip: (p - 1) * limit || 0,
     });
   }
+
+  async removeGif(id: string, user: User): Promise<string> {
+    const gif: Gif = await this.gifRepository.findOne({
+      where: { userId: user.id, id },
+    });
+
+    if (!gif) throw new BadRequestException("no gif with this id");
+    if (gif.user.length === 1) await gif.remove();
+    gif.user.splice(gif.user.indexOf(user), 1);
+    await gif.save();
+    return "Gif have been successfully deleted";
+  }
 }
