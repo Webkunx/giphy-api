@@ -8,10 +8,6 @@ import { JwtStrategy } from "./jwt.strategy";
   imports: [
     forwardRef(() => UsersModule),
     PassportModule.register({ defaultStrategy: "jwt" }),
-    JwtModule.register({
-      secret: "kek",
-      signOptions: { expiresIn: "3600s" },
-    }),
   ],
   providers: [JwtStrategy],
   exports: [JwtStrategy, PassportModule],

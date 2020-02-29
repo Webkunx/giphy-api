@@ -5,13 +5,14 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { UserRepository } from "./user.repository";
 import { JwtModule } from "@nestjs/jwt";
 import { AuthModule } from "src/auth/auth.module";
+import { appConfig } from "src/config/app.config";
 
 @Module({
   imports: [
     AuthModule,
     JwtModule.register({
-      secret: "kek",
-      signOptions: { expiresIn: "3600s" },
+      secret: appConfig.secretKeyJwt,
+      signOptions: { expiresIn: appConfig.expirationJwtTokenTime },
     }),
     TypeOrmModule.forFeature([UserRepository]),
   ],

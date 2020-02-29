@@ -5,6 +5,7 @@ import { JwtPayload } from "./interfaces/jwt.payload.interface";
 import { InjectRepository } from "@nestjs/typeorm";
 import { UserRepository } from "src/users/user.repository";
 import { User } from "src/users/user.entity";
+import { appConfig } from "src/config/app.config";
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -13,7 +14,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: "kek",
+      secretOrKey: appConfig.secretKeyJwt,
     });
   }
   async validate(payload: JwtPayload): Promise<User> {

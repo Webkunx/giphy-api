@@ -22,8 +22,6 @@ export class GifsController {
   constructor(@Inject(GifsService) private gifsService: GifsService) {}
   @Get()
   async findGif(@Query() findGifDto: FindGifDto) {
-    console.log(findGifDto);
-
     return this.gifsService.findGif(findGifDto);
   }
   @Post("save")
