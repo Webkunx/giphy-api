@@ -13,6 +13,7 @@ import { GetUserFromRequest } from "../util/decorators/user.decorator";
 import { User } from "src/users/user.entity";
 import { AuthGuard } from "@nestjs/passport";
 import { Gif } from "./gif.entity";
+import { FindTopGifsDto } from "./dto/find-top-gifs.dto";
 
 @Controller("gifs")
 export class GifsController {
@@ -33,13 +34,13 @@ export class GifsController {
   }
 
   @UseGuards(AuthGuard())
-  @Get("user/")
+  @Get("user")
   async findUserGifs(@GetUserFromRequest() user: User): Promise<Gif[]> {
     return this.gifsService.findUserGifs(user);
   }
 
   @Get("top")
-  async getTopGifs() {
-    return this.gifsService.getTopGifs();
+  async findTopGifs(@Query() findTopGifsDto: FindTopGifsDto): Promise<Gif[]> {
+    return this.gifsService.findTopGifs(findTopGifsDto);
   }
 }

@@ -7,6 +7,7 @@ import { GifRepository } from "./gif.repository";
 import { Gif } from "./gif.entity";
 import { User } from "src/users/user.entity";
 import { url } from "inspector";
+import { FindTopGifsDto } from "./dto/find-top-gifs.dto";
 @Injectable()
 export class GifsService {
   constructor(
@@ -47,7 +48,12 @@ export class GifsService {
     });
   }
 
-  async getTopGifs() {
-    return this.gifRepository.find({ order: { likes: "DESC" }, take: 10 });
+  async findTopGifs(findTopGifsDto: FindTopGifsDto): Promise<Gif[]> {
+    const { p, limit } = findTopGifsDto;
+    return this.gifRepository.find({
+      order: { likes: "DESC" },
+      take: limit || 10,
+      skip: (p - 1) * limit || 0,
+    });
   }
 }
