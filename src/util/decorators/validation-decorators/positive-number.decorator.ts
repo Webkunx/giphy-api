@@ -17,7 +17,10 @@ export function PositiveInt(
       options: validationOptions,
       validator: {
         validate(value: any, args: ValidationArguments) {
-          return parseInt(value) !== NaN && +value > 0 && ~~+value === +value; // you can return a Promise<boolean> here as well, if you want to make async validation
+          return (
+            value == undefined ||
+            (parseInt(value) !== NaN && +value > 0 && ~~+value === +value)
+          ); // you can return a Promise<boolean> here as well, if you want to make async validation
         },
       },
     });

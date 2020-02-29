@@ -6,7 +6,6 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { GifRepository } from "./gif.repository";
 import { Gif } from "./gif.entity";
 import { User } from "src/users/user.entity";
-import { url } from "inspector";
 import { FindTopGifsDto } from "./dto/find-top-gifs.dto";
 @Injectable()
 export class GifsService {
@@ -26,25 +25,27 @@ export class GifsService {
   }
 
   async saveGif(url: string, user: User): Promise<Gif> {
-    const found: Gif = await this.gifRepository.findOne({ where: { url } });
+    const gif: Gif = await this.gifRepository.findOne({ where: { url } });
 
-    if (found === undefined) return this.gifRepository.createGif(url, user);
-
-    if (found.user.indexOf(user) === -1) {
-      delete found.user;
-      return found;
+    if (gif === undefined) return this.gifRepository.createGif(url, user);
+    const userIdsArray = gif.user.map(el => el.id);
+    if (userIdsArray.includes(user.id)) {
+      delete gif.user;
+      return gif;
     }
 
-    found.user.push(user);
-    found.likes += 1;
-    await found.save();
-    delete found.user;
-    return found;
+    gif.user.push(user);
+    gif.likes += 1;
+    await gif.save();
+
+    delete gif.user;
+    return gif;
   }
 
   async findUserGifs(user: User): Promise<Gif[]> {
     return this.gifRepository.find({
       where: { userId: user.id },
+      loadEagerRelations: false,
     });
   }
 
@@ -54,6 +55,7 @@ export class GifsService {
       order: { likes: "DESC" },
       take: limit || 10,
       skip: (p - 1) * limit || 0,
+      loadEagerRelations: false,
     });
   }
 

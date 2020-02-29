@@ -16,7 +16,7 @@ import { User } from "src/users/user.entity";
 import { AuthGuard } from "@nestjs/passport";
 import { Gif } from "./gif.entity";
 import { FindTopGifsDto } from "./dto/find-top-gifs.dto";
-
+@UseGuards(AuthGuard())
 @Controller("gifs")
 export class GifsController {
   constructor(@Inject(GifsService) private gifsService: GifsService) {}
@@ -26,7 +26,6 @@ export class GifsController {
 
     return this.gifsService.findGif(findGifDto);
   }
-  @UseGuards(AuthGuard())
   @Post("save")
   async saveGif(
     @Body("url") url: string,
@@ -35,7 +34,6 @@ export class GifsController {
     return this.gifsService.saveGif(url, user);
   }
 
-  @UseGuards(AuthGuard())
   @Get("user")
   async findUserGifs(@GetUserFromRequest() user: User): Promise<Gif[]> {
     return this.gifsService.findUserGifs(user);
