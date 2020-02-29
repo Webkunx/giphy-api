@@ -1,9 +1,4 @@
-import {
-  IsNotEmpty,
-  IsOptional,
-  IsNumberString,
-  ValidateIf,
-} from "class-validator";
+import { IsNotEmpty, ValidateIf } from "class-validator";
 
 export class FindGifDto {
   @IsNotEmpty()

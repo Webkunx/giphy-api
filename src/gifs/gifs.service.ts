@@ -35,6 +35,7 @@ export class GifsService {
     }
 
     found.user.push(user);
+    found.likes += 1;
     await found.save();
     delete found.user;
     return found;
@@ -47,11 +48,6 @@ export class GifsService {
   }
 
   async getTopGifs() {
-    // return this.gifRepository
-    //   .createQueryBuilder("gif")
-    //   .leftJoinAndSelect("gif.user", "user")
-    //   .groupBy("gif.id, user.id")
-    //   .orderBy("COUNT(user)", "DESC")
-    //   .getMany();
+    return this.gifRepository.find({ order: { likes: "DESC" }, take: 10 });
   }
 }

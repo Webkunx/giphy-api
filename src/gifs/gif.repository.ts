@@ -8,6 +8,7 @@ export class GifRepository extends Repository<Gif> {
     const gif = new Gif();
     gif.url = url;
     gif.user = [user];
+    gif.likes = 1;
     try {
       await gif.save();
     } catch (e) {

@@ -5,6 +5,7 @@ import {
   Column,
   ManyToMany,
   JoinTable,
+  AfterUpdate,
 } from "typeorm";
 import { User } from "src/users/user.entity";
 
@@ -12,8 +13,12 @@ import { User } from "src/users/user.entity";
 export class Gif extends BaseEntity {
   @PrimaryGeneratedColumn("uuid")
   id: string;
+
   @Column()
   url: string;
+
+  @Column()
+  likes: number;
 
   @ManyToMany(
     type => User,
